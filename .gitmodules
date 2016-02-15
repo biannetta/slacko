@@ -1,0 +1,3 @@
+[submodule "vendor/kayako-sdk"]
+	path = vendor/kayako-sdk
+	url = https://github.com/kayako/php-api-library.git
