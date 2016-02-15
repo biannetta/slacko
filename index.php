@@ -7,8 +7,13 @@
 		return $message;
 	}
 
+
 	$klein->respond('GET', '/ticket/[i:id]', function($request) {
 		print get_ticket($request->id);
+	});
+
+	$klein->respond('POST', '/ticket/', function($request) {
+		print get_ticket($request->param("text"));
 	});
 	$klein->dispatch();
 ?>
