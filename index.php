@@ -1,9 +1,14 @@
 <?php
 	require_once("bootstrap.php");
 
-	$tickets = kyTicket::getAll(
-			kyTicketStatus::getAll()->filterByTitle(array("=","Open")), array()
-		);
+	function get_ticket($ticket_number) {
+		$ticket = kyTicket::get($ticket_number);
+		$message = $ticket->getDisplayId()." ".$ticket->getSubject()." ".$ticket->getFullName();
+		return $message;
+	}
 
-	print($tickets[0]);
+	$klein->respond('GET', '/ticket/[i:id]', function($request) {
+		print get_ticket($request->id);
+	});
+	$klein->dispatch();
 ?>
