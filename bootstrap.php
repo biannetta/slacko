@@ -1,6 +1,5 @@
 <?php
 	require_once("vendor/kayako-sdk/kyIncludes.php");
-	require_once("slack/Slack.php");
 	require_once("vendor/autoload.php");
 
 	$config = json_decode(file_get_contents("config/config.json"), true);
