@@ -10,6 +10,7 @@
 					"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId()
 			)
 		);
+		$data = "<http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId()."|".$ticket->getDisplayId()."> ".$ticket->getSubject();
 		return $data;
 	}
 
