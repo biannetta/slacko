@@ -4,12 +4,11 @@
 	function get_ticket($ticket_number) {
 		$ticket = kyTicket::get($ticket_number);
 		$data = array(
-				"text" => $ticket->getSubject(),
 				"response_type" => "in_channel",
-				"attachment" => array(
-					"title" => $ticket->getDisplayId(),
+				"attachments" => array(array(
+					"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
 					"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId()
-			)
+				))
 		);
 		return $data;
 	}
