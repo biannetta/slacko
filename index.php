@@ -14,12 +14,12 @@
 		return $data;
 	}
 
-	$klein->respond('GET', '/ticket/[i:id]', function($request) {
-		return json_encode(get_ticket($request->id));
+	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
+		$response->send(json_encode(get_ticket($request->id)));
 	});
 
-	$klein->respond('POST', '/ticket/', function($request) {
-		return json_encode(get_ticket($request->param("text")));
+	$klein->respond('POST', '/ticket/', function($request, $response) {
+		$response->send(json_encode(get_ticket($request->param("text"))));
 	});
 	$klein->dispatch();
 ?>
