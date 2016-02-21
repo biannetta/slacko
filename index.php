@@ -5,10 +5,24 @@
 		$ticket = kyTicket::get($ticket_number);
 		$data = array(
 				"response_type" => "in_channel",
-				"attachments" => array(array(
-					"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
-					"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId()
-				))
+				"attachments" => array(
+					array(
+						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
+						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
+						"fields" => array(
+							array(
+								"title" => "Creator",
+								"value" => $ticket->getUser(),
+								"short" => "true"
+							),
+							array(
+								"title" => "Assigned To",
+								"value" => $ticket->getOwnerStaffName(),
+								"short" => "true"
+							)
+						)
+					)
+				)
 		);
 		return $data;
 	}
