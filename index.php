@@ -9,8 +9,12 @@
 					array(
 						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
 						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
-						"text" => $ticket->getFirstPost()->toString(),
 						"fields" => array(
+							array(
+								"title" => "Department",
+								"value" => $ticket->getDepartment(),
+								"short" => "true"
+							),
 							array(
 								"title" => "Creator",
 								"value" => $ticket->getFullName(),
