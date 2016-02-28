@@ -43,6 +43,26 @@
 		return $staff;
 	}
 
+	function assign_ticket($ticket_number, $user_id) {
+		$ticket = get_ticket($ticket_number);
+		$staff = get_staff_member_by_user($user_id);
+
+		$ticket->setOwnerStaff($staff);
+		$ticket->update();
+
+		$data = array(
+				"channel" => $user_id,
+				"response_type" => "in_channel",
+				"attachments" => array(
+					array(
+						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
+						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
+						"text" => "This ticket has been assigned to you"
+					)
+				)
+		);
+	}
+
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
 		$response->header("content-type","application/json");
 		$response->json(get_staff_member_by_user("@biannetta"));
@@ -52,20 +72,15 @@
 	$klein->respond('POST', '/ticket/', function($request, $response) {
 		$raw_text = $request->param("text");
 		$params = explode(" ", $raw_text);
-		
+
 		$response->header("content-type","application/json");
 
 		if (count($params) == 2) {
-			$ticket = get_ticket($params[0]);
-			$staff = get_staff_member_by_user($params[1]);
-			
-			$ticket->setOwnerStaff($staff);
-			$ticket->update();
-			
-			$response->json("Ticket ".$params[0]." assigned to ".$params[1]);
+			$response->json($assign_ticket($params[0], $params[1]));
 		} else {
 			$response->json(get_ticket_response($params[0]));
 		}
+
 		$response->send();
 	});
 	$klein->dispatch();
