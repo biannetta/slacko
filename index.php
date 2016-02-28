@@ -1,8 +1,13 @@
 <?php
 	require_once("bootstrap.php");
 
-	function get_ticket($ticket_number) {
+	function get_ticket($ticket_number)	{
 		$ticket = kyTicket::get($ticket_number);
+		return $ticket;
+	}
+
+	function get_ticket_response($ticket_number) {
+		$ticket = get_ticket($ticket_number);
 		$data = array(
 				"response_type" => "in_channel",
 				"attachments" => array(
@@ -28,27 +33,39 @@
 	}
 
 	function get_staff_member_by_user($username) {
-		$staff = kyStaff::getAll()->filterByUserName($slack_users[$username]);
+		$slack_users = array(
+			"@biannetta" => 21,
+			"@tshadd" => 11,
+			"@eros" => 22,
+			"@joe.muresan" => 25
+		);
+		$staff = kyStaff::get($slack_users[$username]);
 		return $staff;
 	}
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
 		$response->header("content-type","application/json");
-		$response->json(get_ticket($request->id));
+		$response->json(get_staff_member_by_user("@biannetta"));
 		$response->send();
 	});
 
 	$klein->respond('POST', '/ticket/', function($request, $response) {
 		$raw_text = $request->param("text");
 		$params = explode(" ", $raw_text);
+		
+		$response->header("content-type","application/json");
 
 		if (count($params) == 2) {
+			$ticket = get_ticket($params[0]);
 			$staff = get_staff_member_by_user($params[1]);
-			file_put_contents('php://stderr', print_r($staff));
+			
+			$ticket->setOwnerStaff($staff);
+			$ticket->update();
+			
+			$response->json("Ticket ".$params[0]." assigned to ".$params[1]);
+		} else {
+			$response->json(get_ticket_response($params[0]));
 		}
-
-		$response->header("content-type","application/json");
-		$response->json(get_ticket($params[0]));
 		$response->send();
 	});
 	$klein->dispatch();
