@@ -64,19 +64,18 @@
 			$ticket = get_ticket($params[0]);
 			$staff = get_staff_member_by_user($params[1]);
 
+			assign_ticket($ticket, $staff);		
 			$response->json($data = array(
-				"channel" => $params[1],
 				"response_type" => "in_channel",
 				"attachments" => array(
 					array(
 						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
 						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
-						"text" => "This ticket has been assigned to you"
+						"text" => "This ticket has been assigned to ".$params[1]
 					)
 				)
 			));
 			$response->send();
-			$assign_ticket($params[0], $params[1]);		
 		} else {
 			$response->json(get_ticket_response($params[0]));
 			$response->send();
