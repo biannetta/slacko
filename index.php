@@ -43,30 +43,9 @@
 		return $staff;
 	}
 
-	function assign_ticket($ticket_number, $user_id) {
-		$ticket = get_ticket($ticket_number);
-		$staff = get_staff_member_by_user($user_id);
-
-		try {
-			$ticket->setOwnerStaff($staff);
-			$ticket->update();
-
-			$data = array(
-				"response_type" => "in_channel",
-				"attachments" => array(
-					array(
-						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
-						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
-						"text" => "This ticket has been assigned to ".$user_id
-					)
-				)
-			);
-		} catch (Exception $e) {
-			$data = array(
-				"text" => $e->getMessage()
-			);
-		}
-		return $data;
+	function assign_ticket($ticket, $staff) {
+		$ticket->setOwnerStaff($staff);
+		$ticket->update();
 	}
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
@@ -82,12 +61,26 @@
 		$response->header("content-type","application/json");
 
 		if (count($params) == 2) {
-			$response->json(assign_ticket($params[0], $params[1]));
+			$ticket = get_ticket($ticket_number);
+			$staff = get_staff_member_by_user($user_id);
+
+			$response->json($data = array(
+				"channel" => $user_id,
+				"response_type" => "in_channel",
+				"attachments" => array(
+					array(
+						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
+						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
+						"text" => "This ticket has been assigned to you"
+					)
+				)
+			));
+			$response->send();
+			$assign_ticket($params[0], $params[1]);		
 		} else {
 			$response->json(get_ticket_response($params[0]));
+			$response->send();
 		}
-
-		$response->send();
 	});
 	$klein->dispatch();
 ?>
