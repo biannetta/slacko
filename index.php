@@ -61,11 +61,11 @@
 		$response->header("content-type","application/json");
 
 		if (count($params) == 2) {
-			$ticket = get_ticket($ticket_number);
-			$staff = get_staff_member_by_user($user_id);
+			$ticket = get_ticket($params[0]);
+			$staff = get_staff_member_by_user($params[1]);
 
 			$response->json($data = array(
-				"channel" => $user_id,
+				"channel" => $params[1],
 				"response_type" => "in_channel",
 				"attachments" => array(
 					array(
