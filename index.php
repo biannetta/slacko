@@ -48,6 +48,15 @@
 		$ticket->update();
 	}
 
+	function get_help() {
+		$help  = "• `/ticket 123456` Display Information and Link about Case 123456";
+		$help += "\n • `/ticket 123456 @username` Assign Ticket 123456 to Username";
+		$help += "\n • `/ticket help` List help about Kayako Slack command";
+		$data = array(
+				"text" => $help
+		);
+	}
+
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
 		$response->header("content-type","application/json");
 		$response->json(get_staff_member_by_user("@biannetta"));
@@ -64,7 +73,7 @@
 			$ticket = get_ticket($params[0]);
 			$staff = get_staff_member_by_user($params[1]);
 
-			assign_ticket($ticket, $staff);		
+			assign_ticket($ticket, $staff);
 			$response->json($data = array(
 				"response_type" => "in_channel",
 				"attachments" => array(
@@ -77,8 +86,13 @@
 			));
 			$response->send();
 		} else {
-			$response->json(get_ticket_response($params[0]));
-			$response->send();
+			if (strtoupper($params[0]) == "HELP") {
+				$response->json(get_help());
+				$response->send();
+			} else {
+				$response->json(get_ticket_response($params[0]));
+				$response->send();
+			}
 		}
 	});
 	$klein->dispatch();
