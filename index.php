@@ -1,5 +1,5 @@
 <?php
-	require_once("bootstrap.php");
+	include "bootstrap.php";
 
 	function get_ticket($ticket_number)	{
 		$ticket = kyTicket::get($ticket_number);
@@ -33,21 +33,8 @@
 	}
 
 	function get_staff_member_by_user($username) {
-		$slack_users = array(
-			"@biannetta" => 21,
-			"@tshadd" => 11,
-			"@eros" => 22,
-			"@joe.muresan" => 25,
-			"@carol" => 13,
-			"@ericcourteaux" => 9,
-			"@gerry" => 23,
-			"@its_a_jeep_thing" => 4,
-			"@rob" => 3,
-			"@ron.renaud" => 12,
-			"@cezar" => 6,
-			"@mire" => 14
-		);
-		$staff = kyStaff::get($slack_users[$username]);
+		$config = json_decode(file_get_contents("config/config.json"), true);
+		$staff = kyStaff::getAll()->filterByEmail($config["slack"][$username]);
 		return $staff;
 	}
 
@@ -65,7 +52,7 @@
 	});
 
 	$klein->respond('GET', '/staff/[:username]', function($request, $response) {
-		echo kyStaff::getAll()->filterByEmail($request->username);
+		echo get_staff_member_by_user($request->username);
 	});
 
 	$klein->respond('POST', '/ticket/', function($request, $response) {
