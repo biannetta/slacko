@@ -54,7 +54,11 @@
 		$help += "\n • `/ticket help` List help about Kayako Slack command";
 
 		$data = array(
-				"text" => $help
+			"attachments" => array(
+				array(
+					"text" => $help
+				)
+			)
 		);
 
 		return $data;
