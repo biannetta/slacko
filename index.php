@@ -49,15 +49,9 @@
 	}
 
 	function get_help() {
-		$data = array(
-			"attachments" => array(
-				array(
-					"text" => "• `/ticket 123456` Display Information and Link about Case 123456"
-							+ "\n • `/ticket 123456 @username` Assign Ticket 123456 to Username"
-							+ "\n • `/ticket help` List help about Kayako Slack command"
-				)
-			)
-		);
+		$data =  "• `/ticket 123456` Display Information and Link about Case 123456"
+				+ "\n • `/ticket 123456 @username` Assign Ticket 123456 to Username"
+				+ "\n • `/ticket help` List help about Kayako Slack command";
 
 		return $data;
 	}
