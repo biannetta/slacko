@@ -52,9 +52,12 @@
 		$help  = "• `/ticket 123456` Display Information and Link about Case 123456";
 		$help += "\n • `/ticket 123456 @username` Assign Ticket 123456 to Username";
 		$help += "\n • `/ticket help` List help about Kayako Slack command";
+
 		$data = array(
 				"text" => $help
 		);
+
+		return $data;
 	}
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
