@@ -86,7 +86,11 @@
 			$response->send();
 		} else {
 			if (strtoupper($params[0]) == "HELP") {
-				$response->json(get_help());
+				$response->json(array(
+						"text" => "• `/ticket 123456` Display Information and Link about Case 123456 \n • `/ticket 123456 @username` Assign Ticket 123456 to Username \n • `/ticket help` List help about Kayako Slack command",
+						"mrkdwn_in" => ["text","pretext"]
+					)
+				);
 				$response->send();
 			} else {
 				$response->json(get_ticket_response($params[0]));
