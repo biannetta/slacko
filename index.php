@@ -37,7 +37,15 @@
 			"@biannetta" => 21,
 			"@tshadd" => 11,
 			"@eros" => 22,
-			"@joe.muresan" => 25
+			"@joe.muresan" => 25,
+			"@carol" => 13,
+			"@ericcourteaux" => 9,
+			"@gerry" => 23,
+			"@its_a_jeep_thing" => 4,
+			"@rob" => 3,
+			"@ron.renaud" => 12,
+			"@cezar" => 6,
+			"@mire" => 14
 		);
 		$staff = kyStaff::get($slack_users[$username]);
 		return $staff;
@@ -48,18 +56,16 @@
 		$ticket->update();
 	}
 
-	function get_help() {
-		$data =  "• `/ticket 123456` Display Information and Link about Case 123456"
-				+ "\n • `/ticket 123456 @username` Assign Ticket 123456 to Username"
-				+ "\n • `/ticket help` List help about Kayako Slack command";
-
-		return $data;
-	}
-
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
-		$response->header("content-type","application/json");
-		$response->json(get_staff_member_by_user("@biannetta"));
-		$response->send();
+		echo kyTicket::get($request->id);
+	});
+
+	$klein->respond('GET', '/staff/[i:id]', function($request, $response) {
+		echo kyStaff::get($request->id);
+	});
+
+	$klein->respond('GET', '/staff/[:username]', function($request, $response) {
+		echo kyStaff::getAll()->filterByEmail($request->username);
 	});
 
 	$klein->respond('POST', '/ticket/', function($request, $response) {
