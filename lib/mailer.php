@@ -4,13 +4,14 @@
 	function init($config) {
 		$mail = new PHPMailer;
 
+		$mail->isSMTP();
 		$mail->Host = $config["host"];
 		$mail->SMTPAuth = true;
 		$mail->Username = $config["username"];
 		$mail->Password = $config["password"];
 		$mail->SMTPSecure = $config["encryption"];
 		$mail->Port = $config["port"];
-		$mail->setFrom($config["username"], $config["mailer"]);
+		$mail->setFrom($config["username"], $config["mailer"], 0);
 
 		return $mail;
 	}
