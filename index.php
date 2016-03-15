@@ -67,7 +67,11 @@
 			echo "No ".$params["department"]." tickets set to ".$params["status"];
 		} else {
 			foreach ($tickets as $ticket) {
-				echo $ticket->getDisplayId()." - ".$ticket->getSubject()." <b>".$ticket->getOwnerStaffName()."</b><br/>";
+				if ($ticket->getOwnerStaff() != null) {
+					echo $ticket->getDisplayId()." [".$ticket->getDepartment()->getTitle()."] - ".$ticket->getSubject()." ".$ticket->getOwnerStaffName()." (".$ticket->getOwnerStaff()->getEmail().")<br/>";
+				} else {
+					echo $ticket->getDisplayId()." [".$ticket->getDepartment()->getTitle()."] - ".$ticket->getSubject()." Unassigned<br/>";
+				}
 			}
 		}
 	});
