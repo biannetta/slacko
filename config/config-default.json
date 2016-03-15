@@ -1,7 +1,20 @@
 {
-	"api": {
+	// Configuration for the Kayako REST API
+	"kayako": {
 		"url":"http://www.example.com/path/to/api/",
 		"key":"api-key",
 		"secret":"api-secret"
+	},
+	// Translation from Slack User to Kayako User
+	"slack": {
+		"@slack_username":"kayako@email.com"
+	},
+	// PHPMailer Configuration
+	"email": {
+		"username":"user@email.com",
+		"password":"secret",
+		"host":"host.smtp.com",
+		"encryption":"ssl",
+		"port":465
 	}
 }

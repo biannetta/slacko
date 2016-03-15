@@ -1,5 +1,6 @@
 <?php
 	include "bootstrap.php";
+	include "lib/mailer.php";
 
 	function get_ticket($ticket_number)	{
 		$ticket = kyTicket::get($ticket_number);
@@ -55,7 +56,7 @@
 	}
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
-		echo kyTicket::get($request->id)->getStatus();
+		echo kyTicket::get($request->id);
 	});
 
 	$klein->respond('GET', '/ticket/query', function($request, $response) {
@@ -72,6 +73,31 @@
 				} else {
 					echo $ticket->getDisplayId()." [".$ticket->getDepartment()->getTitle()."] - ".$ticket->getSubject()." Unassigned<br/>";
 				}
+			}
+		}
+	});
+
+	$klein->respond('GET', '/ticket/cron', function($request, $response) {
+		$email_tickets = [];
+		$params = $request->params();
+
+		$tickets = get_tickets_by_dept_status($params["department"], $params["status"]);
+
+		if (count($tickets) == 0) {
+			echo "No ".$params["department"]." tickets set to ".$params["status"];
+		} else {
+			foreach ($tickets as $ticket) {
+				if ($ticket->getOwnerStaff() != null) {
+					$email_tickets[$ticket->getOwnerStaff()->getEmail()][] = $ticket->getDisplayId()." [".$ticket->getDepartment()->getTitle()."] - ".$ticket->getSubject();
+				}
+			}
+		}
+
+		foreach ($email_tickets as $email => $messages) {
+			$body = "You are receiving this message becasue the following tickets are still assigned to the General Department category. Please review them and set them to the proper department<br/><br/>";
+			$return = send_mail($email, "General Department Tickets", $body.implode("<br/>",$messages));
+			if(!$return["success"]) {
+				echo $return["message"];
 			}
 		}
 	});
