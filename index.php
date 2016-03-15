@@ -43,8 +43,33 @@
 		$ticket->update();
 	}
 
+	function get_tickets_by_dept_status($department, $status) {
+		$tickets = kyTicket::getAll(
+			kyDepartment::getAll()->filterByTitle(array("~", "/".$department."/i")),
+    		kyTicketStatus::getAll()->filterByTitle(array("=", $status)),
+    		array(),
+    		array()
+   		);
+
+   		return $tickets;
+	}
+
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
-		echo kyTicket::get($request->id);
+		echo kyTicket::get($request->id)->getStatus();
+	});
+
+	$klein->respond('GET', '/ticket/query', function($request, $response) {
+		$params = $request->params();
+
+		$tickets = get_tickets_by_dept_status($params["department"], $params["status"]);
+
+		if (count($tickets) == 0) {
+			echo "No ".$params["department"]." tickets set to ".$params["status"];
+		} else {
+			foreach ($tickets as $ticket) {
+				echo $ticket->getDisplayId()." - ".$ticket->getSubject()." <b>".$ticket->getOwnerStaffName()."</b><br/>";
+			}
+		}
 	});
 
 	$klein->respond('GET', '/staff/[i:id]', function($request, $response) {
