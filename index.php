@@ -60,8 +60,8 @@
 		$json = file_get_contents('php://input');
 		$commit_details = json_decode($json);
 
-		echo (String)$commit_details["message"];
-		echo (String)$commit_details["author"];
+		//echo (String)$commit_details["message"];
+		//echo (String)$commit_details["author"];
 
 		/* Added Files */
 		echo "Files added: ".implode($commit_details["added"], "\n");
