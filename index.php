@@ -56,7 +56,7 @@
    		return $tickets;
 	}
 
-	$klein->respond('GET', '/svnhook', function($request, $response) {
+	$klein->respond('POST', '/svnhook', function($request, $response) {
 		$json = file_get_contents('php://input');
 		var_dump(json_decode($json));
 	});
