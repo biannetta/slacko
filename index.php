@@ -56,17 +56,9 @@
    		return $tickets;
 	}
 
-	$klein->respond('POST', '/svnhook', function($request, $response) {
+	$klein->respond('GET', '/svnhook', function($request, $response) {
 		$json = file_get_contents('php://input');
-
-		ob_start();
 		var_dump(json_decode($json));
-		$output = ob_get_clean();
-
-		$outputFile = “/home/administrator/sites/slacko.prosoftxp.com/output.txt”;
-		$filehandle = fopen($outputFile, ‘a’) or die(“File creation error.”);
-		fwrite($fileHandle, $output);
-		fclose($fileHandle);
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
