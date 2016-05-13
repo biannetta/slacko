@@ -14,6 +14,7 @@
 				"attachments" => array(
 					array(
 						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
+						"fallback" => "Case ".$ticket->getDisplayId(),
 						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
 						"fields" => array(
 							array(
@@ -126,6 +127,7 @@
 				"attachments" => array(
 					array(
 						"title" => $ticket->getDisplayId()." - ".$ticket->getSubject(),
+						"fallback" => "Assigned ticket",
 						"title_link" => "http://prosoftxp.com/support/staff/index.php?/Tickets/Ticket/View/".$ticket->getDisplayId(),
 						"text" => "This ticket has been assigned to ".$params[1]
 					)
