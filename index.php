@@ -58,7 +58,20 @@
 
 	$klein->respond('POST', '/svnhook', function($request, $response) {
 		$json = file_get_contents('php://input');
-		var_dump(json_decode($json));
+		$commit_details = json_decode($json);
+
+		echo $commit_details["message"];
+		echo $commit_details["author"];
+
+		/* Added Files */
+		echo "Files added: ".implode($commit_details["added"], "\n");
+
+		/* Replaced Files */
+		echo "Files replaced: ".implode($commit_details["replaced"], "\n");
+
+		/* Modified Files */
+		echo "Files Modified: ".implode($commit_details["modified"], "\n");
+
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
