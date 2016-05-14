@@ -65,7 +65,7 @@
 		var_dump($matches);
 
 		$case_number = $matches[1];
-		var_dump(get_ticket($case_number);
+		var_dump(get_ticket($case_number));
 
 	});
 
