@@ -61,7 +61,7 @@
 		$commit_details = json_decode($json);
 
 	  $matches = [];
-		preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details->message, $matches);
+		preg_match("/[Cc]ase?:?(\d+)+/", $commit_details->message, $matches);
 		var_dump($matches);
 
 		foreach ($matches as $case_number) {
