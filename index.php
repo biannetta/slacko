@@ -63,6 +63,11 @@
 	  $matches = [];
 		preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details->message, $matches);
 		var_dump($matches);
+
+		foreach ($matches as $case_number) {
+			var_dump(get_ticket($case_number));
+		}
+
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
