@@ -64,9 +64,8 @@
 		preg_match("/[Cc]ase?:?(\d+)/", $commit_details->message, $matches);
 		var_dump($matches);
 
-		foreach ($matches as $case_number) {
-			var_dump(get_ticket($case_number));
-		}
+		$case_number = $matches[1];
+		var_dump(get_ticket($case_number);
 
 	});
 
