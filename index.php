@@ -60,16 +60,16 @@
 		$json = file_get_contents('php://input');
 		$commit_details = json_decode($json);
 
-		var_dump(preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details["message"]));
+		var_dump(preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details->message));
 
 		/* Added Files */
-		var_dump(implode($commit_details["added"], "\n"));
+		var_dump(implode($commit_details->added, "\n"));
 
 		/* Replaced Files */
-		var_dump(implode($commit_details["replaced"], "\n"));
+		var_dump(implode($commit_details->replaced, "\n"));
 
 		/* Modified Files */
-		var_dump(implode($commit_details["modified"], "\n"));
+		var_dump(implode($commit_details->modified, "\n"));
 
 	});
 
