@@ -60,17 +60,9 @@
 		$json = file_get_contents('php://input');
 		$commit_details = json_decode($json);
 
-		var_dump(preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details->message));
-
-		/* Added Files */
-		var_dump(implode($commit_details->added, "\n"));
-
-		/* Replaced Files */
-		var_dump(implode($commit_details->replaced, "\n"));
-
-		/* Modified Files */
-		var_dump(implode($commit_details->modified, "\n"));
-
+	  $matches = [];
+		preg_match("/[Cc]ase?:?(\s*(,|and)?\s*\d+)+/", $commit_details->message, $matches);
+		var_dump($matches);
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
