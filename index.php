@@ -65,8 +65,9 @@
 		var_dump($matches);
 
 		$case_number = $matches[1];
-		var_dump(get_ticket($case_number));
+		$ticket = get_ticket($case_number);
 
+		$ticket->newNote(get_staff_member_by_user("@biannetta"), $commit_details->message);
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
