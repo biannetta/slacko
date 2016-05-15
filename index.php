@@ -68,7 +68,7 @@
 		$ticket = get_ticket($case_number);
 		$staff = get_staff_member_by_user("@biannetta");
 
-		$ticket->newNote($staff, $commit_details->message);
+		$ticket->newNote(kyStaff::get($staff->id), $commit_details->message)->create();
 	});
 
 	$klein->respond('GET', '/ticket/[i:id]', function($request, $response) {
